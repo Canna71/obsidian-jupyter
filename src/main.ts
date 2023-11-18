@@ -1,5 +1,5 @@
 import { DEFAULT_SETTINGS, JupyterSettings } from "src/Settings";
-import { addIcon, MarkdownView } from "obsidian";
+import { addIcon } from "obsidian";
 
 // import { MathResult } from './Extensions/ResultMarkdownChild';
 /* eslint-disable @typescript-eslint/no-unused-vars */
@@ -34,56 +34,13 @@ export default class JupyterPlugin extends Plugin {
         addIcon("sigma",sigma); 
 
 
-        if (this.settings.addRibbonIcon) {
-            // This creates an icon in the left ribbon.
-            const ribbonIconEl = this.addRibbonIcon(
-                "sigma",
-                "Open Jupyter",
-                (evt: MouseEvent) => {
-                    this.activateView();
-                }
-            );
-            // Perform additional things with the ribbon
-            ribbonIconEl.addClass("Jupyter-ribbon-class");
-        }
-
-        this.addCommand({
-            id: "show-Jupyter-view",
-            name: "Show Jupyter Sidebar",
-            callback: () => this.activateView(),
-          });
+    
          
+          this.registerExtensions(["ipynb"], JUPYTER_VIEW);
 
-        this.app.workspace.onLayoutReady(() => {
-            if(this.settings.showAtStartup){
-                this.activateView();
-            }
-        });
+       
 
-        this.registerCodeBlock();
-        this.registerPostProcessor();
-        this.registerEditorExtensions();
-
-        this.app.workspace.on(
-            "active-leaf-change",
-            (leaf: WorkspaceLeaf | null) => {
-                // console.log("active-leaf-change", leaf);
-                if (leaf?.view instanceof MarkdownView) {
-                    // @ts-expect-error, not typed
-                    const editorView = leaf.view.editor.cm as EditorView;
-                    
-                }
-            },
-            this
-        );
-
-        this.app.workspace.on(
-            "codemirror",
-            (cm: CodeMirror.Editor) => {
-                console.log("codemirror", cm);
-            },
-            this
-        );
+        
 
         this.addSettingTab(new JupyterSettingsTab(this.app, this));
     }
@@ -105,41 +62,6 @@ export default class JupyterPlugin extends Plugin {
         await this.saveData(this.settings);
     }
 
-    async activateView() {
-        this.app.workspace.detachLeavesOfType(JUPYTER_VIEW);
 
-        await this.app.workspace.getRightLeaf(false).setViewState(
-            {
-                type: JUPYTER_VIEW,
-                active: true,
-            },
-            { settings: this.settings }
-        );
 
-        this.app.workspace.revealLeaf(
-            this.app.workspace.getLeavesOfType(JUPYTER_VIEW)[0]
-        );
-    }
-
-    async registerCodeBlock() {
-        await loadMathJax();
-        await finishRenderMath();
-        this.registerMarkdownCodeBlockProcessor(
-            "Jupyter",
-            (source, el, ctx) => {
-                // processCodeBlock(source, el, this.settings, ctx);
-            }
-        );
-    }
-
-    async registerPostProcessor() {
-        console.log("registerPostProcessor");
-        // await loadMathJax();
-        // await finishRenderMath();
-        // this.registerMarkdownPostProcessor(getPostPrcessor(this.settings));
-    }
-
-    async registerEditorExtensions() {
-        // this.registerEditorExtension([resultField, JupyterConfigField]);
-    }
 }

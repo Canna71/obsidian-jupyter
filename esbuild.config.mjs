@@ -37,7 +37,7 @@ esbuild.build({
 		...builtins],
 	format: 'cjs',
 	watch: !prod,
-	target: 'es2016',
+	target: 'esnext',
 	logLevel: "info",
 	sourcemap: prod ? false : 'inline',
 	treeShaking: true,
@@ -45,9 +45,9 @@ esbuild.build({
     plugins: [svgrPlugin()]
 }).catch(() => process.exit(1));
 
-esbuild.build({
-	entryPoints: ['styles.scss'],
-    outfile: "styles.css",
-	watch: !prod,
-    plugins: [sassPlugin()]
-}).catch(() => process.exit(1));
+// esbuild.build({
+// 	entryPoints: ['styles.scss'],
+//     outfile: "styles.css",
+// 	watch: !prod,
+//     plugins: [sassPlugin()]
+// }).catch(() => process.exit(1));

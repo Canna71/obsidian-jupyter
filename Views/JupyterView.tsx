@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-types */
-import { debounce, finishRenderMath, ItemView,  WorkspaceLeaf } from "obsidian";
+import { debounce, finishRenderMath, ItemView, WorkspaceLeaf } from "obsidian";
 import * as React from "react";
 import { createRoot, Root } from "react-dom/client";
 
@@ -8,6 +8,7 @@ import { createRoot, Root } from "react-dom/client";
 import { loadMathJax } from "obsidian";
 import { JupyterSettings } from "src/Settings";
 import { getJupyterSettings } from "src/main";
+import { Jupyter, Notebook } from "@datalayer/jupyter-react";
 export const JUPYTER_VIEW = "Jupyter-view";
 
 export const JupyterContext = React.createContext<any>({});
@@ -61,7 +62,26 @@ export class JupyterView extends ItemView {
                     width: this.contentEl.innerWidth,
                     settings: this.settings
                 }}>
-                   <div>TODO:</div>
+                    <div className="jupyter-container" >
+                        <Jupyter>
+                            <h1>A Jupyter Notebook</h1>
+                            {/* path:
+     - bqplot.ipynb
+     - ipywidgets.ipynb
+     - matplotlib.ipynb
+     - test.ipynb
+     - ipywidgets.ipynb */}
+                            <Notebook
+                                path="ipywidgets.ipynb"
+                                externalIPyWidgets={[
+                                    { name: "jupyter-matplotlib", version: "0.11.3" },
+                                    { name: "bqplot", version: "0.5.42" },
+                                ]}
+                                uid="notebook-uid"
+                                height="calc(100vh - 2.6rem)"
+                            />
+                        </Jupyter>
+                    </div>
                 </JupyterContext.Provider>
             </React.StrictMode>
         );
