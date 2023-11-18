@@ -6,16 +6,16 @@ import { createRoot, Root } from "react-dom/client";
 
 
 import { loadMathJax } from "obsidian";
-import { TemplateSettings } from "src/Settings";
-import { getTemplateSettings } from "src/main";
-export const TEMPLATE_VIEW = "Template-view";
+import { JupyterSettings } from "src/Settings";
+import { getJupyterSettings } from "src/main";
+export const JUPYTER_VIEW = "Jupyter-view";
 
-export const TemplateContext = React.createContext<any>({});
+export const JupyterContext = React.createContext<any>({});
 
 
 
-export class TemplateView extends ItemView {
-    settings: TemplateSettings;
+export class JupyterView extends ItemView {
+    settings: JupyterSettings;
     root: Root;
     state = {
 
@@ -25,8 +25,8 @@ export class TemplateView extends ItemView {
 
     constructor(leaf: WorkspaceLeaf) {
         super(leaf);
-        // this.settings = (this.app as any).plugins.plugins["obsidian-Template"].settings as TemplateSettings;
-        this.settings = getTemplateSettings();
+        // this.settings = (this.app as any).plugins.plugins["obsidian-Jupyter"].settings as JupyterSettings;
+        this.settings = getJupyterSettings();
         this.state = {
 
         };
@@ -34,11 +34,11 @@ export class TemplateView extends ItemView {
     }
 
     getViewType() {
-        return TEMPLATE_VIEW;
+        return JUPYTER_VIEW;
     }
 
     getDisplayText() {
-        return "Template";
+        return "Jupyter";
     }
 
     override onResize(): void {
@@ -57,12 +57,12 @@ export class TemplateView extends ItemView {
 
         this.root.render(
             <React.StrictMode>
-                <TemplateContext.Provider value={{
+                <JupyterContext.Provider value={{
                     width: this.contentEl.innerWidth,
                     settings: this.settings
                 }}>
                    <div>TODO:</div>
-                </TemplateContext.Provider>
+                </JupyterContext.Provider>
             </React.StrictMode>
         );
     }
